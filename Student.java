@@ -1,39 +1,71 @@
-class Student extends User
-{
-    private String id, pass;
-    public Student(String id, String pass) {
-        this.id = id;
-        this.pass = pass;
-    }
+import java.util.ArrayList;
 
-    public void setId(String id) {
-      this.id = id;
-    }
+class Student extends User {
+	private String id, pass;
+	ArrayList<Room> roomList;
 
-    public String getId() {
-      return id;
-    }
+	public Student(String id, String pass, ArrayList<Room> roomList) {
+		this.id = id;
+		this.pass = pass;
+		this.roomList = roomList;
+	}
 
-    public void setPass(String pass) {
-      this.pass = pass;
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getPass() {
-      return pass;
-    }
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
 
-    public boolean reserve(int roomNum) {
-      if ((roomList.reserve(roomNum))) {
-        return true;
-      }
-      return false;
-    }
-    
-    public boolean cancel(int roomNum) {
-      if (roomList.getRoom(roomNum).compareTo(id)) {
-        roomList.cancel(roomNum);
-        return true;
-      }
-      return false;
-    }
+	/**
+	 * @param pass the pass to set
+	 */
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	/**
+	 * @return the pass
+	 */
+	public String getPass() {
+		return pass;
+	}
+
+	/**
+	 * @return the roomList
+	 */
+	public ArrayList<Room> getRoomList() {
+		return roomList;
+	}
+
+	/**
+	 * @param roomList the roomList to set
+	 */
+	public void setRoomList(ArrayList<Room> roomList) {
+		this.roomList = roomList;
+	}
+
+	public boolean reserve(int roomNum) {
+		if (!roomList.get(roomNum).reserved) {
+			roomList.get(roomNum).reserved = true;
+			roomList.get(roomNum).ownedBy = this.id;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean cancel(int roomNum) {
+		if (roomList.get(roomNum).ownedBy == this.id) {
+			roomList.get(roomNum).reserved = false;
+			return true;
+		}
+		return false;
+	}
 }
