@@ -1,76 +1,65 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
 class Admin extends User {
-	private String id, pass;
-	ArrayList<Room> roomList;
 
-	public Admin(String id, String pass, ArrayList<Room> roomList) {
-		this.id = id;
-		this.pass = pass;
-		this.roomList = roomList;
+	public Admin(String id, String pass) {
+		super(id, pass, 2);
 	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
+	public int menu(Scanner input)
+	{
+		System.out.println("\nAccount contains " + " entries.\n"
+						 + "Password Manager Menu\n"
+						 + "---------------------\n"
+						 + "1) See rooms\n"
+						 + "2) Add a new room\n"
+						 + "3) Edit a room's availability\n"
+						 + "4) Remove a room\n"
+						 + "0) Save & Quit\n");
+		return input.nextInt();
 	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param pass the pass to set
-	 */
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-
-	/**
-	 * @return the pass
-	 */
-	public String getPass() {
-		return pass;
-	}
-
-	/**
-	 * @param roomList the roomList to set
-	 */
-	public void setRoomList(ArrayList<Room> roomList) {
-		this.roomList = roomList;
-	}
-
-	/**
-	 * @return the roomList
-	 */
-	public ArrayList<Room> getRoomList() {
-		return roomList;
-	}
-
-	public boolean editAvailability(int roomNum) {
-		if (!roomList.get(roomNum).reserved) {
-			roomList.get(roomNum).reserved = true;
-		}
-		return false;
-	}
-
-	public void changeReservation(int roomNum, String newOwner) {
-		roomList.get(roomNum).ownedBy = newOwner;
-	}
-
-	public boolean add(Room r) {
-		if (roomList.add(r)) {
-			return true;
-		}
-		return false;
-	}
-
-	public void remove(int roomNum) {
-		roomList.remove(roomNum);
+	public boolean doSomething(int choice, Scanner input, RoomList rooms)
+	{
+		switch(choice){
+			case 1:
+				rooms.printRooms();
+				break;
+        	case 2:
+        		System.out.println("Which room would you like to add? ");
+        		int roomNumber = input.nextInt();
+        		System.out.println("How many people can it fit? ");
+        		int capacity = input.nextInt();
+        		rooms.add(new Room(("Library " + roomNumber), roomNumber, capacity, false, ""));
+        		break;
+        	case 3:
+        		System.out.println("Which room reservation would you like to change?");
+        		roomNumber = input.nextInt();
+        		System.out.println("Who is the reservation for? (Type * to make the room available again): ");
+        		String owner = input.nextLine();
+        		if(owner.equals("*"))
+        		{
+        			rooms.changeReservation(roomNumber, "", false);
+        			System.out.println("Room " + roomNumber + " has been made available.");
+        		}
+        		else
+        		{
+        			rooms.changeReservation(roomNumber, owner, true);
+        			System.out.println("Room " + roomNumber + " has been reserved for " + owner + ".");
+        		}
+        		break;
+        	case 4:
+        		System.out.println("Which room would you like to remove?");
+        		roomNumber = input.nextInt();
+        		if(rooms.remove(roomNumber))
+        			System.out.println("Room " + roomNumber + " has been removed.");
+        		else
+        			System.out.println("ERROR: Room " + roomNumber + " does not exist.");
+        		break;
+        	case 0:
+            	System.out.println("Goodbye!");
+            	return false;
+            default:
+            	System.out.println("Invalid Input.");
+        }
+		return true;
 	}
 }
