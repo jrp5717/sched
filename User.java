@@ -1,61 +1,35 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class User {
-	private static String username;
-	private static String password;
+	private String username;
+	private String password;
+	private int access;
 
-	public User() { }
+	public User() {this("admin", "", 0);}
 
-	public User (String username, String Password)
+	public User (String username, String password)
+	{
+		this(username,password,0);
+	}
+	
+	public User(String username, String password, int access)
 	{
 		this.username = username;
 		this.password = password;
+		this.access = access;
 	}
-
+	public int menu(Scanner input)
+	{
+		return 0;
+	}
+	public boolean doSomething(int choice, Scanner input, RoomList rooms)
+	{
+		return false;
+	}
+	
 	String getUsername() {return username;}
 	String getPassword() {return password;}
-
-	public static int Login()
-	{
-		Scanner in = new Scanner(System.in);
-		String userIn;
-		String passIn;
-
-		List<User> listOfUsers = new ArrayList<>();
-
-		listOfUsers.add(new User("student", ""));
-		listOfUsers.add(new User("admin", ""));
-
-		System.out.println("Type in Username");
-		userIn = in.nextLine();
-		System.out.println("Type in Password");
-		passIn = in.nextLine();
-		in.close();
-
-		for (User user : listOfUsers)
-		{
-			if (user.getUsername().equals("student"))
-			{
-				if(user.getPassword().equals(""))
-				{
-					username = userIn;
-					password = passIn;
-					return 0;
-				}
-			}
-			else if(user.getUsername().equals("admin"))
-			{
-				if(user.getPassword().equals(""))
-				{
-					username = userIn;
-					password = passIn;
-					return 1;
-				}
-			}
-		}
-		return 2;
-	}
-
+	int getAccess() {return access;}
+	void setUsername(String username) {this.username = username;}
+	void setPassword(String password) {this.password = password;}
 }

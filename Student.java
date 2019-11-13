@@ -1,71 +1,69 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
 class Student extends User {
-	private String id, pass;
-	ArrayList<Room> roomList;
 
-	public Student(String id, String pass, ArrayList<Room> roomList) {
-		this.id = id;
-		this.pass = pass;
-		this.roomList = roomList;
+	public Student(String id, String pass) {
+		super(id, pass, 1);
 	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
+	
+	public int menu(Scanner input)
+	{
+		System.out.println("Password Manager Menu\n"
+						 + "---------------------\n"
+						 + "1) See rooms\n"
+						 + "2) Reserve a room\n"
+						 + "3) Cancel a reservation\n"
+						 + "0) Save & Quit\n");
+		return input.nextInt();
 	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * @param pass the pass to set
-	 */
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-
-	/**
-	 * @return the pass
-	 */
-	public String getPass() {
-		return pass;
-	}
-
-	/**
-	 * @return the roomList
-	 */
-	public ArrayList<Room> getRoomList() {
-		return roomList;
-	}
-
-	/**
-	 * @param roomList the roomList to set
-	 */
-	public void setRoomList(ArrayList<Room> roomList) {
-		this.roomList = roomList;
-	}
-
-	public boolean reserve(int roomNum) {
-		if (!roomList.get(roomNum).reserved) {
-			roomList.get(roomNum).reserved = true;
-			roomList.get(roomNum).ownedBy = this.id;
-			return true;
-		}
-		return false;
-	}
-
-	public boolean cancel(int roomNum) {
-		if (roomList.get(roomNum).ownedBy == this.id) {
-			roomList.get(roomNum).reserved = false;
-			return true;
-		}
-		return false;
+	public boolean doSomething(int choice, Scanner input, RoomList rooms)
+	{
+		switch(choice){
+			case 1:
+				rooms.printRooms();
+				break;
+        	case 2:
+        		System.out.println("Which room would you like to reserve?");
+        		int roomNumber = 0;
+        		while(true)
+        		{
+        			try {
+        				roomNumber = input.nextInt();
+        			} catch(Exception e) { System.out.println("Please enter an integer: "); };
+        			if(rooms.validRoomNumber(roomNumber))
+        				break;
+        			System.out.println("Room does not exist, enter a valid room number: ");
+        		}
+        		if(rooms.reserve(roomNumber, this.getUsername()))
+        			System.out.println("Room has been reserved.");
+        		else
+        			System.out.println("ERROR: Room is already reserved.");
+        		break;
+        		
+        	case 3:
+        		System.out.println("Which reservation would you like to cancel?");
+        		roomNumber = 0;
+        		while(true)
+        		{
+        			try {
+        				roomNumber = input.nextInt();
+        			} catch(Exception e) { System.out.println("Please enter an integer: "); };
+        			if(rooms.validRoomNumber(roomNumber))
+        				break;
+        			System.out.println("Room does not exist, enter a valid room number: ");
+        		}
+        		if(rooms.cancel(roomNumber, this.getUsername()))
+        			System.out.println("Reservation has been cancelled.");
+        		else
+        			System.out.println("ERROR: Room is not reserved by you.");
+        		break;
+        		
+        	case 0:
+            	System.out.println("Goodbye!");
+            	return false;
+            default:
+            	System.out.println("Invalid Input.");
+        }
+		return true;
 	}
 }
