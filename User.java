@@ -22,11 +22,15 @@ public class User {
 	{
 		return 0;
 	}
-	public boolean doSomething(int choice, Scanner input, RoomList rooms)
+	public boolean doSomething(int choice, Scanner input, RoomList rooms, UserList users)
 	{
 		return false;
 	}
-	
+	@Override
+	public String toString()
+	{
+		return access + ";" + username + ";" + password;
+	}
 	String getUsername() {return username;}
 	String getPassword() {return password;}
 	int getAccess() {return access;}

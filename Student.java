@@ -8,15 +8,23 @@ class Student extends User {
 	
 	public int menu(Scanner input)
 	{
-		System.out.println("Password Manager Menu\n"
+		int choice = -1;
+		System.out.println("Room Reservation Menu\n"
 						 + "---------------------\n"
 						 + "1) See rooms\n"
 						 + "2) Reserve a room\n"
 						 + "3) Cancel a reservation\n"
+						 + "4) Change password\n"
 						 + "0) Save & Quit\n");
-		return input.nextInt();
+		while(choice < 0 || choice > 4)
+		{
+			try {
+				choice = input.nextInt();
+			} catch (Exception e) { System.out.println("Try again..."); }
+		}
+		return choice;
 	}
-	public boolean doSomething(int choice, Scanner input, RoomList rooms)
+	public boolean doSomething(int choice, Scanner input, RoomList rooms, UserList users)
 	{
 		switch(choice){
 			case 1:
@@ -57,7 +65,11 @@ class Student extends User {
         		else
         			System.out.println("ERROR: Room is not reserved by you.");
         		break;
-        		
+        	case 4:
+        		System.out.println("Password: ");
+        		this.setPassword(input.nextLine());
+        		System.out.println("Password has been changed.");
+        		break;
         	case 0:
             	System.out.println("Goodbye!");
             	return false;

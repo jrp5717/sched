@@ -1,12 +1,19 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class RoomList
 {
 	ArrayList<Room> rooms;
+	String loc;
 	
 	public RoomList()
 	{
 		rooms = new ArrayList<Room>();
+		loc = "Rooms";
+		readIn();
 	}
 	
 	public boolean reserve(int roomNum, String id) {
@@ -21,7 +28,7 @@ public class RoomList
 	public boolean cancel(int roomNum, String id) {
 		if (rooms.get(roomNum).getOwnedBy().equals(id)) {
 			rooms.get(roomNum).setReserved(false);
-			rooms.get(roomNum).setOwnedBy("");
+			rooms.get(roomNum).setOwnedBy("none");
 			return true;
 		}
 		return false;
@@ -68,5 +75,34 @@ public class RoomList
 			if(r.getRoomNum() == i)
 				return true;
 		return false;
+	}
+	private void readIn()
+	{
+		try {
+	    	BufferedReader reader = new BufferedReader(new FileReader(loc));
+			while(true)
+			{
+				String[] tokens = reader.readLine().split(";");
+				boolean isReserved = tokens[3].equals("true");
+				rooms.add(new Room(tokens[0], Integer.valueOf(tokens[1]), Integer.valueOf(tokens[2]), isReserved, tokens[4]));
+			}
+	    } catch(Exception e){}
+	}
+	public void save()
+	{
+		String all = "";
+		for(int i = 0; i < rooms.size(); i++)
+		{
+			all += rooms.get(i).toString() + "\n";
+		}
+		try
+		{
+			BufferedWriter writer = new BufferedWriter(new FileWriter(loc));
+			writer.write(all);
+			writer.close();
+		} catch(Exception e)
+		{
+			System.out.println("Error saving to PasswordLog");
+		}
 	}
 }

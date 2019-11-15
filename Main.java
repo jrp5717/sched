@@ -4,11 +4,6 @@ public class Main {
     public static void main(String[] args) {
         RoomList rooms = new RoomList();
         UserList listOfUsers = new UserList();
-        listOfUsers.add(new Student("student1", ""));
-        listOfUsers.add(new Student("student2", ""));
-        listOfUsers.add(new Admin("admin", ""));
-        rooms.add(new Room("Library 205", 205, 30, false, ""));
-        rooms.add(new Room("Library 204", 204, 30, true, "student1"));
         Scanner input = new Scanner(System.in);
         int access = 3;
         Boolean progLoop = true;
@@ -32,7 +27,7 @@ public class Main {
         
         while (progLoop){
              int choice = user.menu(input);
-             progLoop = user.doSomething(choice, input, rooms);
+             progLoop = user.doSomething(choice, input, rooms, listOfUsers);
         }
     }
 }

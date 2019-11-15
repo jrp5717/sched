@@ -74,5 +74,12 @@ public class Room
 	{
 		this.ownedBy = ownedBy;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return name + ";" + roomNum + ";" + capacity + ";" + reserved + ";" + ownedBy;
+	}
     
+	
 }
